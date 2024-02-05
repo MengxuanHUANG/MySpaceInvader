@@ -86,7 +86,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039651865645025679}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -103,8 +103,8 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 118
-  m_CollisionDetection: 0
+  m_Constraints: 84
+  m_CollisionDetection: 1
 --- !u!114 &3591969125907365771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explodeKnell: {fileID: 8300000, guid: 097e647fcaa557c4f92e4cd57862a0e1, type: 3}
   explodeEffect: {fileID: 906585140960031543, guid: 5579ac73a0568ae4d88aa9c2977852a8, type: 3}
+  DeadMaterial: {fileID: 2100000, guid: eab387ecf8c76a94cb74700ebd94d881, type: 2}
 --- !u!65 &2735189729946574902
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -126,7 +127,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2039651865645025679}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 84dd9ccea0f7b3c4b83dc36da4984f43, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

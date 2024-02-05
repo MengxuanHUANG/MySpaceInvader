@@ -20,12 +20,12 @@ TagManager:
   - Base
   - AlienInvader
   - PlayerShip
-  - PlayerBuller
+  - PlayerBullet
   - InvaderBullet
   - RockBase
   - Particle
-  - 
-  - 
+  - Rock
+  - Hole
   - 
   - 
   - 

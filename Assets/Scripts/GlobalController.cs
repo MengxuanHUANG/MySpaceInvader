@@ -4,6 +4,7 @@ using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GlobalController : MonoBehaviour
 {
@@ -20,7 +21,11 @@ public class GlobalController : MonoBehaviour
 
     public Vector3 PlayerShipInitPosition;
     public GameObject PlayerShip;
-    
+
+    public int InitBulletCount;
+    private int bulletCount;
+    private Text BulletText;
+
     [Header("Alien Invader")]
     public GameObject AlienUFO;
     private GameObject currentUFO;
@@ -40,14 +45,15 @@ public class GlobalController : MonoBehaviour
     // private memebers
     private LifeIcons lifeIcons;
     private Text GameOverText;
-
+    
     // Start is called before the first frame update
     void Start()
     {
         lifeIcons = GameObject.FindObjectOfType<LifeIcons>();
         GameOverText = GameObject.Find("GameOverText").GetComponent<Text>();
         rockList = new List<GameObject>();
-        scoreGUI = GetComponentInChildren<Text>();
+        scoreGUI = GameObject.Find("PlayerScore").GetComponent<Text>(); 
+        BulletText = GameObject.Find("RemainingBullet").GetComponent<Text>();
         OnGameStart();
     }
 
@@ -94,6 +100,8 @@ public class GlobalController : MonoBehaviour
 
     public void Reset()
     {
+        ClearAll();
+
         CancelInvoke("BackToStartScreen");
 
         isGameOver = false;
@@ -108,6 +116,9 @@ public class GlobalController : MonoBehaviour
         //Initiate PlayerShip
         InitPlayerShip();
 
+        bulletCount = InitBulletCount;
+        BulletText.text = bulletCount.ToString();
+
         lifeIcons.Reset(InitLife);
 
         // Inititiate Rocks
@@ -116,6 +127,24 @@ public class GlobalController : MonoBehaviour
         CancelInvoke("GenUFO");
         float randTime = Random.Range(7.0f, 15.0f);
         Invoke("GenUFO", randTime);
+    }
+
+    private void ClearAll()
+    {
+        // Clear bullets
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (GameObject bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+
+        GameObject[] invaders = GameObject.FindGameObjectsWithTag("AlienInvader");
+
+        foreach (GameObject invader in invaders)
+        {
+            Destroy(invader);
+        }
     }
 
     private void InitPlayerShip()
@@ -173,10 +202,13 @@ public class GlobalController : MonoBehaviour
     {
         if (!isGameOver)
         {
-            currentUFO = Instantiate(AlienUFO, UFOInitPos, Quaternion.identity) as GameObject;
-            currentUFO.GetComponent<Rigidbody>().AddForce(new Vector3(200.0f, 0.0f, 0.0f));
+            float sign = Random.RandomRange(-1.0f, 1.0f) > 0 ? 1 : -1;
+            Vector3 pos = UFOInitPos;
+            pos.x *= sign;
+            currentUFO = Instantiate(AlienUFO, pos, Quaternion.identity) as GameObject;
+            currentUFO.GetComponent<Rigidbody>().AddForce(new Vector3(sign * 200.0f, 0.0f, 0.0f));
 
-            Invoke("DestroyUFO", 6);
+            Invoke("DestroyUFO", 4);
 
             float randTime = Random.Range(15.0f, 30.0f);
             Invoke("GenUFO", randTime);
@@ -192,6 +224,37 @@ public class GlobalController : MonoBehaviour
 
     private void BackToStartScreen()
     {
-        Application.LoadLevel("StartScreen");
+        SceneManager.LoadScene("StartScreen");
+    }
+
+    public void IncreaseBullet()
+    {
+        ++bulletCount;
+        BulletText.text = bulletCount.ToString();
+    }
+
+    public bool DecreaseBullet()
+    {
+        if (bulletCount <= 0) return false;
+        
+        --bulletCount;
+        BulletText.text = bulletCount.ToString();
+        return true;
+    }
+    public void Restart()
+    {
+        Reset();
+    }
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void PlayShipShoot()
+    {
+        if(curPlayerShip != null)
+        {
+            curPlayerShip.GetComponent<PlayerShip>().OnShoot();
+        }
     }
 }

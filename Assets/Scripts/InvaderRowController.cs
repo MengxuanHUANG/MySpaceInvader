@@ -151,9 +151,8 @@ public class InvaderRowController : MonoBehaviour
 
             for (int j = 0; j < invaderCount; j++)
             {
-                GameObject invader = Instantiate(alienInvaders[i], position, Quaternion.identity) as GameObject;
-                invader.transform.parent = transform;
-
+                GameObject invader = Instantiate(alienInvaders[i], position, Quaternion.identity, transform);
+                invader.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
                 invadersLinkedLists[i].AddLast(invader);
                 position.x += invaderStep;
             }

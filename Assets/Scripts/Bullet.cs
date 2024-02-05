@@ -10,6 +10,9 @@ public class Bullet : MonoBehaviour
     public AudioClip explodeKnell;
     public GameObject explodeEffect;
 
+    public Material DeadMaterial;
+
+    private bool dead;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody>();
@@ -18,6 +21,7 @@ public class Bullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dead = false;
     }
 
     // Update is called once per frame
@@ -34,11 +38,18 @@ public class Bullet : MonoBehaviour
 
     private void OnDead()
     {
-        Destroy(gameObject);
+        //Destroy(gameObject);
+        
+        dead = true;
+        GetComponent<MeshRenderer>().sharedMaterial = DeadMaterial;
+        GetComponent<Rigidbody>().useGravity = true;
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        if(dead) return;
+
         Collider collider = collision.collider;
         if(collider.CompareTag("Bullet"))
         {
@@ -56,9 +67,10 @@ public class Bullet : MonoBehaviour
         {
             Destroy(collider.gameObject);
         }
+        
         AudioSource.PlayClipAtPoint(explodeKnell, gameObject.transform.position);
         Instantiate(explodeEffect, gameObject.transform.position, Quaternion.AngleAxis(-90, Vector3.right));
-
-        Destroy(gameObject);
+        
+        OnDead();
     }
 }

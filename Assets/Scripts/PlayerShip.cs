@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerShip : MonoBehaviour
 {
@@ -22,9 +23,16 @@ public class PlayerShip : MonoBehaviour
 
     private MainCamera mainCamera;
 
+    private GlobalController globalController;
+
+    private FixedJoystick joystick;
+
     // Start is called before the first frame update
     void Start()
     {
+        globalController = GameObject.Find("GlobalController").GetComponent<GlobalController>();
+        joystick = FindAnyObjectByType<FixedJoystick>();
+
         mainCamera = Camera.main.GetComponent<MainCamera>();
         rigidBody = GetComponent<Rigidbody>();
         cooldownTimer = 0.0f;
@@ -33,7 +41,7 @@ public class PlayerShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        float axis_raw_input = Input.GetAxisRaw("Horizontal");
+        float axis_raw_input = joystick.Horizontal;// Input.acceleration.x;
 
         if (Math.Abs(axis_raw_input) > 0.01f)
         {
@@ -58,14 +66,12 @@ public class PlayerShip : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1") && !cooldown)
-        {
-            OnShoot();
-        }
     }
 
     public void OnShoot()
     {
+        if (cooldown || !globalController.DecreaseBullet()) return;
+
         Vector3 spawnPos = gameObject.transform.position + new Vector3(0.0f, 0.0f, 0.7f);
         // instantiate the Bullet
 

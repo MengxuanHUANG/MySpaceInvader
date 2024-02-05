@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StartScreenController : MonoBehaviour
 {
@@ -15,11 +16,21 @@ public class StartScreenController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.F11))
         {
-            Application.LoadLevel("GameplayScene");
+            SceneManager.LoadScene("GameplayScene");
         }
         else if(Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
         }
+    }
+
+    public void StartGame()
+    {
+        SceneManager.LoadScene("GameplayScene");
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

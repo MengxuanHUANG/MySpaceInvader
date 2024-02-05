@@ -47,9 +47,9 @@ public class Rock : MonoBehaviour
                 GameObject obj = Instantiate(rockObj, local_pos, Quaternion.identity) as GameObject;
                 obj.transform.parent = transform;
                 rocks.Add(obj);
-                local_pos.x += 0.1f;
+                local_pos.x += 0.2f;
             }
-            pos.z += 0.1f;
+            pos.z += 0.2f;
         }
     }
 }
