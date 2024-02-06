@@ -5,7 +5,7 @@ using UnityEngine;
 public class Holes : MonoBehaviour
 {
     GlobalController globalController;
-
+    public AudioClip explodeKnell;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,10 +23,12 @@ public class Holes : MonoBehaviour
         if(other.CompareTag("Bullet"))
         {
             globalController.IncreaseBullet();
+            AudioSource.PlayClipAtPoint(explodeKnell, gameObject.transform.position);
         }
         else if(other.CompareTag("AlienInvader"))
         {
-            globalController.IncreasePoint(other.GetComponent<AlienInvader>().point);
+            globalController.IncreaseBullet(other.GetComponent<AlienInvader>().point / 10);
+            AudioSource.PlayClipAtPoint(explodeKnell, gameObject.transform.position);
         }
 
         Destroy(other.gameObject);

@@ -25,13 +25,13 @@ public class PlayerShip : MonoBehaviour
 
     private GlobalController globalController;
 
-    private FixedJoystick joystick;
+    private FloatingJoystick joystick;
 
     // Start is called before the first frame update
     void Start()
     {
         globalController = GameObject.Find("GlobalController").GetComponent<GlobalController>();
-        joystick = FindAnyObjectByType<FixedJoystick>();
+        joystick = FindAnyObjectByType<FloatingJoystick>();
 
         mainCamera = Camera.main.GetComponent<MainCamera>();
         rigidBody = GetComponent<Rigidbody>();
@@ -41,7 +41,14 @@ public class PlayerShip : MonoBehaviour
 
     void FixedUpdate()
     {
-        float axis_raw_input = joystick.Horizontal;// Input.acceleration.x;
+
+#if UNITY_ANDROID
+        float axis_raw_input = joystick.Horizontal;
+#endif
+
+#if UNITY_STANDALONE
+        float axis_raw_input = Input.GetAxisRaw("Horizontal");
+#endif
 
         if (Math.Abs(axis_raw_input) > 0.01f)
         {
@@ -66,6 +73,12 @@ public class PlayerShip : MonoBehaviour
 
     void Update()
     {
+#if UNITY_STANDALONE
+        if (Input.GetButtonDown("Fire1"))
+        {
+            OnShoot();
+        }
+#endif
     }
 
     public void OnShoot()

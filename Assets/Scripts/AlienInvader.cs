@@ -39,10 +39,18 @@ public class AlienInvader : MonoBehaviour
 
     public void OnDead()
     {
-        if(dead) Destroy(gameObject);
-
-        transform.parent.gameObject.GetComponent<InvaderRowController>().InvaderDead();
-        transform.parent = null;
+        if (dead)
+        {
+            GameObject.Find("GlobalController").GetComponent<GlobalController>().IncreasePoint(point);
+            Destroy(gameObject);
+            return;
+        }
+        if(transform.parent)
+        {
+            transform.parent.gameObject.GetComponent<InvaderRowController>().InvaderDead();
+            transform.parent = null;
+        }
+        
         GameObject.Find("GlobalController").GetComponent<GlobalController>().IncreasePoint(point);
 
         //Destroy(gameObject);

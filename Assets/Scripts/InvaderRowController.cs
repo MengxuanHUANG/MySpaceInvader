@@ -152,12 +152,24 @@ public class InvaderRowController : MonoBehaviour
             for (int j = 0; j < invaderCount; j++)
             {
                 GameObject invader = Instantiate(alienInvaders[i], position, Quaternion.identity, transform);
-                invader.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePosition;
+
+                invader.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition | RigidbodyConstraints.FreezeRotation;
+                
                 invadersLinkedLists[i].AddLast(invader);
                 position.x += invaderStep;
             }
             position.z += verticalGap;
         }
+        
+
+        /*for(int i = 0; i < alienInvaders.Length; ++i)
+        {
+            foreach(GameObject invader in invadersLinkedLists[i])
+            {
+                invader.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition | 
+                    RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+            }
+        }*/
 
         Invoke("InvaderShoot", Random.Range(2, 4));
     }

@@ -227,9 +227,9 @@ public class GlobalController : MonoBehaviour
         SceneManager.LoadScene("StartScreen");
     }
 
-    public void IncreaseBullet()
+    public void IncreaseBullet(int count = 1)
     {
-        ++bulletCount;
+        bulletCount += count;
         BulletText.text = bulletCount.ToString();
     }
 

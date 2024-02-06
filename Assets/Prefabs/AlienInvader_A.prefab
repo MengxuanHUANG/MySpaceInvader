@@ -147,6 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   point: 10
-  bulletSpeed: 300
+  bulletSpeed: 150
   bullet: {fileID: 2039651865645025679, guid: ad1ca7d1a6481f442b8eee8e7f4c0a21, type: 3}
   DeadMaterial: {fileID: 2100000, guid: eab387ecf8c76a94cb74700ebd94d881, type: 2}
